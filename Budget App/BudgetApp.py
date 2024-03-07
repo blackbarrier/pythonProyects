@@ -4,11 +4,11 @@ class Category:
         self.ledger = []
     
     def __str__(self):
-        print(f"{self.category:*^30}\n")
-        for item in self.ledger:
-            print(f"{item['description']:<23}{item['amount']:>7}\n")
-        print("Total:",(sum (item["amount"] for item in self.ledger)))
         response=""
+        response+=(f"{self.category:*^30}\n")
+        for item in self.ledger:
+            response+=(f"{item['description'][:23]:<23}{item['amount']:>7}\n")
+        response+=(f"Total: {(sum (item['amount'] for item in self.ledger))}")
         return response           
         
         # return response
@@ -34,8 +34,8 @@ class Category:
 
     def transfer(self, amount, category):
         if self.check_funds(amount):
-            self.withdraw(amount, f"Transfer to {self.category}")
-            self.deposit(amount, f"Transfer from {category.category}")
+            self.withdraw(amount, f"Transfer to {category.category}")
+            category.deposit(amount, f"Transfer from {self.category}")
             return True
         return False     
 
@@ -46,7 +46,32 @@ class Category:
     
 
 def create_spend_chart(categories):
-    #Gragico de barras
+    #Take values by category
+    categories_spend={}
+    total_spend=0
+    for category in categories:
+        category_dict={}
+        category_spend=0
+        for spend in category.ledger:
+            if spend["amount"]<0:
+                category_spend+=spend["amount"]                
+        categories_spend[f"{category.category}"]=category_spend
+        total_spend+=category_spend
+     
+    #Calculate percentage
+    categories_percentages={}
+    for item in categories_spend:
+        percentage=(categories_spend[item])*100/total_spend
+        percentage=round(percentage / 10) * 10
+        categories_percentages[item]=percentage
+    print(categories_percentages)
+
+    #GragicarString
+    var=0
+    leng=len(categories_percentages)
+    ln1=f"100| {var:*<{leng}}"
+
+    print(ln1)
     pass
 
 
@@ -57,5 +82,10 @@ food.withdraw(15.89, "restaurant and more food for dessert")
 clothing = Category("Clothing")
 food.transfer(50, clothing)
 
-print(food)
+clothing.withdraw(30.15, "cosas")
+
+
+# print(food)
 # print(food.transfer(50, clothing))
+# print(clothing)
+create_spend_chart([food,clothing])
