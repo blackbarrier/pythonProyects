@@ -5,18 +5,17 @@ class Category:
     
     def __str__(self):
         print(f"{self.category:*^30}\n")
-        print(f"{self.category:*^30}\n")
-        print(f"{self.category:*^30}\n")
-        print(f"{self.category:*^30}\n")
-        print(f"{self.category:*^30}\n")
-        print(f"{self.category:*^30}\n")
-
-        # response= f"stringggg"
+        for item in self.ledger:
+            print(f"{item['description']:<23}{item['amount']:>7}\n")
+        print("Total:",(sum (item["amount"] for item in self.ledger)))
+        response=""
+        return response           
+        
         # return response
     
     def deposit(self, amount, description=""):
         self.ledger.append({"amount": amount, "description": description})
-        pass
+
 
     def withdraw(self, amount, description=""):
         if self.check_funds(amount):
@@ -30,17 +29,18 @@ class Category:
         balance=0
         for item in self.ledger:
             balance+=item["amount"]
+
         return balance
 
     def transfer(self, amount, category):
         if self.check_funds(amount):
-            self.withdraw(self, amount, "Transfer to [Destination Budget Category]")
-            self.deposit(self, amount, "Transfer from [Source Budget Category]")
+            self.withdraw(amount, f"Transfer to {self.category}")
+            self.deposit(amount, f"Transfer from {category.category}")
             return True
         return False     
 
     def check_funds(self, amount):
-        if amount > self.get_balance(self):
+        if amount > self.get_balance():
             return False
         return True
     
@@ -51,9 +51,11 @@ def create_spend_chart(categories):
 
 
 food = Category("Food")
-# food.deposit(1000, "deposit")
-# food.withdraw(10.15, "groceries")
-# food.withdraw(15.89, "restaurant and more food for dessert")
-# clothing = Category("Clothing")
-# food.transfer(50, clothing)
+food.deposit(1000, "deposit")
+food.withdraw(10.15, "groceries")
+food.withdraw(15.89, "restaurant and more food for dessert")
+clothing = Category("Clothing")
+food.transfer(50, clothing)
+
 print(food)
+# print(food.transfer(50, clothing))
