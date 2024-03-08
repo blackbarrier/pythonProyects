@@ -67,12 +67,28 @@ def create_spend_chart(categories):
     print(categories_percentages)
 
     #GragicarString
-    var=0
-    leng=len(categories_percentages)
-    ln1=f"100| {var:*<{leng}}"
 
-    print(ln1)
-    pass
+    
+    leng=len(categories_percentages)
+    # for i in range(100, -1, -10):
+    
+    L=[]
+    for item in categories_percentages:
+        if (categories_percentages[item])>=10:
+            L.append("o")
+        else:
+            L.append("")
+    linea = ' '.join(L)
+    
+    print(linea)
+
+
+
+            # L.append(categories_percentages[item])
+        # myvar=f" {}{}{}"
+        # y=f"{i:>3}|{myvar}"
+        # print(y)
+   
 
 
 food = Category("Food")
