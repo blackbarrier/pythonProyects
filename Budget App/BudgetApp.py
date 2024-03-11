@@ -9,9 +9,8 @@ class Category:
         for item in self.ledger:
             response+=(f"{item['description'][:23]:<23}{item['amount']:>7}\n")
         response+=(f"Total: {(sum (item['amount'] for item in self.ledger))}")
-        return response           
+        return f"{response}"           
         
-        # return response
     
     def deposit(self, amount, description=""):
         self.ledger.append({"amount": amount, "description": description})
@@ -46,6 +45,7 @@ class Category:
     
 
 def create_spend_chart(categories):
+    
     #Take values by category
     categories_spend={}
     total_spend=0
@@ -57,51 +57,86 @@ def create_spend_chart(categories):
                 category_spend+=spend["amount"]                
         categories_spend[f"{category.category}"]=category_spend
         total_spend+=category_spend
+    # print(categories_spend)
+
      
     #Calculate percentage
+    L=[]
     categories_percentages={}
     for item in categories_spend:
         percentage=(categories_spend[item])*100/total_spend
-        percentage=round(percentage / 10) * 10
+        percentage=int((percentage // 10)*10)
         categories_percentages[item]=percentage
-    print(categories_percentages)
+        L.append(percentage)
+    # print(categories_percentages)
 
-    #GragicarString
+
+    #GraficarString
+    chart=""
+
+    #Title
+    chart+=(f"Percentage spent by category\n")
+
+    #Data  
+
+    for i in range (100,-1,-10):
+        line=f"{i:>3}| "
+        for percentage in L:
+            if percentage >=i:
+                percentage="o"
+            else:
+                percentage=" "
+            
+            line+=f"{percentage}  "
+        #     line+=str(precentage)
+
+        chart+=f"{line}\n"
 
     
-    leng=len(categories_percentages)
-    # for i in range(100, -1, -10):
-    
-    L=[]
-    for item in categories_percentages:
-        if (categories_percentages[item])>=10:
-            L.append("o")
+
+    #Tags
+    leng=len(categories)
+    chart+=(f"    {'---'*leng}-\n")
+    maximo=0
+
+    for category in categories:
+        if len(category.category)>maximo:
+            maximo=len(category.category)    
+    for i in range (maximo):
+        ln="    "
+        for category in categories:
+            if i < len(category.category):            
+                char=category.category[i]
+            else:
+                char=" "
+            ln+=" "+char+" "
+        if i!=maximo-1:
+            chart+=f"{ln} \n"
         else:
-            L.append("")
-    linea = ' '.join(L)
-    
-    print(linea)
+            chart+=f"{ln} "
+
+    return(chart)
 
 
-
-            # L.append(categories_percentages[item])
-        # myvar=f" {}{}{}"
-        # y=f"{i:>3}|{myvar}"
-        # print(y)
    
 
 
 food = Category("Food")
 food.deposit(1000, "deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
+food.withdraw(6, "groceries")
+
 clothing = Category("Clothing")
-food.transfer(50, clothing)
+clothing.deposit(1000, "deposit")
+clothing.withdraw(2, "groceries")
 
-clothing.withdraw(30.15, "cosas")
+auto = Category("Auto")
+auto.deposit(1000, "deposit")
+auto.withdraw(1, "groceries")
+
+compu = Category("Compu")
+compu.deposit(1000, "deposit")
+compu.withdraw(3, "groceries")
 
 
-# print(food)
-# print(food.transfer(50, clothing))
-# print(clothing)
-create_spend_chart([food,clothing])
+
+print(create_spend_chart([food,clothing , auto,compu]))
