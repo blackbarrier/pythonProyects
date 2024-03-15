@@ -23,46 +23,36 @@ def determineDay(today,dias):
 
 def add_time(start, duration, today=""):
 
-    #Declaracion de variables
+    #Variables declaration
     part=start[-2:]
     start=start[0:5]
     start=(stringToHour(start))
     duration=(stringToHour(duration))
 
-    #Defino la hora resultante
+    #Define hour
     hora=(start[0]+duration[0])
     if part=="PM" and start[0]!=12:
         hora+=12
-    #Defino los minutos resultantes
+    #Define minutes
     minutos=(start[1]+duration[1])
 
-    #Cantidad de horas sumadas por 60min
+    #Format    
     sumaHoras=(minutos//60)
-    #Sumo las horas calculadas
     hora+=sumaHoras
-    #Resto los minutos ya sumados en horas
     minutos-=(60*sumaHoras)
 
-    #Cantidad de dias sumadas por 24hs.
-    dias=(hora//24)
-    
-
-    #Sumo los dias calculadas
+    #Days
+    dias=(hora//24)    
     if dias==0:
         mssg=""
     elif dias==1:
         mssg=" (next day)"
     else:
-        mssg=f" ({dias} days later)"
+        mssg=f" ({dias} days later)"    
     
-    
-    #Resto las horas ya sumadas en dias.
-    hora-=(24*dias)
-    
-   
+    hora-=(24*dias)  
 
-   #Formato de 24hs a 12hs.
-    
+   # 24hs To 12hs.        
     if hora<=11 and minutos<=59:
         part="AM"
         if hora==00:
@@ -71,10 +61,9 @@ def add_time(start, duration, today=""):
         part="PM"
         if hora!=12:
             hora-=12
-    
+        
     if 0 <= minutos <= 9:
         minutos="0"+str(minutos)
-
 
     if today!="":
         diaCaulculado=determineDay(today,dias)
@@ -82,8 +71,5 @@ def add_time(start, duration, today=""):
     else:
         new_time=f"{hora}:{minutos} {part}{mssg}"
 
-    #Muestra de resultados.    
-    print("."+new_time+".")
-
-
-add_time("3:30 PM", "2:12", "Monday")
+    #Show results.         
+    return new_time

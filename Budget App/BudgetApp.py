@@ -7,14 +7,15 @@ class Category:
         response=""
         response+=(f"{self.category:*^30}\n")
         for item in self.ledger:
-            response+=(f"{item['description'][:23]:<23}{item['amount']:>7}\n")
+            response += f"{item['description'][:23]:<23}{item['amount']:>7.2f}\n"
+
+
         response+=(f"Total: {(sum (item['amount'] for item in self.ledger))}")
         return f"{response}"           
         
     
     def deposit(self, amount, description=""):
         self.ledger.append({"amount": amount, "description": description})
-
 
     def withdraw(self, amount, description=""):
         if self.check_funds(amount):
@@ -28,7 +29,6 @@ class Category:
         balance=0
         for item in self.ledger:
             balance+=item["amount"]
-
         return balance
 
     def transfer(self, amount, category):
@@ -44,8 +44,7 @@ class Category:
         return True
     
 
-def create_spend_chart(categories):
-    
+def create_spend_chart(categories):    
     #Take values by category
     categories_spend={}
     total_spend=0
@@ -57,8 +56,6 @@ def create_spend_chart(categories):
                 category_spend+=spend["amount"]                
         categories_spend[f"{category.category}"]=category_spend
         total_spend+=category_spend
-    # print(categories_spend)
-
      
     #Calculate percentage
     L=[]
@@ -68,17 +65,14 @@ def create_spend_chart(categories):
         percentage=int((percentage // 10)*10)
         categories_percentages[item]=percentage
         L.append(percentage)
-    # print(categories_percentages)
 
-
-    #GraficarString
+    #String
     chart=""
 
     #Title
     chart+=(f"Percentage spent by category\n")
 
-    #Data  
-
+    #Data
     for i in range (100,-1,-10):
         line=f"{i:>3}| "
         for percentage in L:
@@ -88,11 +82,7 @@ def create_spend_chart(categories):
                 percentage=" "
             
             line+=f"{percentage}  "
-        #     line+=str(precentage)
-
         chart+=f"{line}\n"
-
-    
 
     #Tags
     leng=len(categories)
@@ -114,29 +104,13 @@ def create_spend_chart(categories):
             chart+=f"{ln} \n"
         else:
             chart+=f"{ln} "
-
     return(chart)
 
-
    
-
-
 food = Category("Food")
 food.deposit(1000, "deposit")
-food.withdraw(6, "groceries")
-
+food.withdraw(10.15, "groceries")
+food.withdraw(15.89, "restaurant and more food for dessert")
 clothing = Category("Clothing")
-clothing.deposit(1000, "deposit")
-clothing.withdraw(2, "groceries")
-
-auto = Category("Auto")
-auto.deposit(1000, "deposit")
-auto.withdraw(1, "groceries")
-
-compu = Category("Compu")
-compu.deposit(1000, "deposit")
-compu.withdraw(3, "groceries")
-
-
-
-print(create_spend_chart([food,clothing , auto,compu]))
+food.transfer(50, clothing)
+print(food)

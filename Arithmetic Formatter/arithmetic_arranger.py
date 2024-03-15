@@ -25,18 +25,17 @@ def len_num(problems):
   return True
 
 def formatting(problems, show_answers):
-  
   str1,str2,str3,str4="","","",""
-  
+
   for problem in problems:
-    
+
     parts=problem.split()
     operand1=str(parts[0])
     operator=str(parts[1])
     operand2=str(parts[2])
 
     max_value = max(len(operand1), len(operand2))
-    
+
     if problem==problems[-1]:
       str1+=f"{operand1:>{max_value+2}}"
       str2+=f"{operator:<{1}}{operand2:>{max_value+1}}"
@@ -66,10 +65,8 @@ def arithmetic_arranger(problems, show_answers=False):
   if limit(problems):    
     if operator(problems):
       if digits(problems):
-        if len_num(problems):           
-             
+        if len_num(problems):          
             return formatting(problems, show_answers)
-        
         else:
            error=("Error: Numbers cannot be more than four digits.")
       else:
@@ -79,6 +76,3 @@ def arithmetic_arranger(problems, show_answers=False):
   else:
     error=("Error: Too many problems.")
   return error
-
-
-# print(arithmetic_arranger(['3801 - 2', '123 + 49'], True))

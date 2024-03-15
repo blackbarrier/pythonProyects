@@ -4,7 +4,6 @@ class Rectangle:
         self.height=height
 
     def __str__(self):
-        string="lalala"
         return f"Rectangle(width={self.width}, height={self.height})"
 
     def set_width(self, width):
@@ -19,8 +18,7 @@ class Rectangle:
     def get_perimeter(self):
         return (2 * self.width + 2 * self.height)
 
-    def get_diagonal(self):
-        
+    def get_diagonal(self):        
         return (self.width ** 2 + self.height ** 2) ** .5
 
     def get_picture(self):
@@ -36,13 +34,11 @@ class Rectangle:
         if self.width>=shape.width and self.height>=shape.height:
             amountWidth=self.width//shape.width
             amountHight=self.height//shape.height
-            total=amountWidth*amountHight
-            
+            total=amountWidth*amountHight            
         else:
             total=0
+
         return total
-
-
 
 class Square(Rectangle):
     def __init__(self, side):
@@ -57,7 +53,6 @@ class Square(Rectangle):
         self.side=side
         self.width=side
         self.height=side
-
     
     def set_width(self, side):
         self.side=side
